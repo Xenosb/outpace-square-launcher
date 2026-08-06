@@ -43,7 +43,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFF000000)
+@Preview(showBackground = true, backgroundColor = 0xFF000000, widthDp = 1280, heightDp = 800)
 @Composable
 fun MainActivityPreview() {
     MyApplicationTheme {

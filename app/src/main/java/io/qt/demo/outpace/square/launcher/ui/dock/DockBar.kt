@@ -1,9 +1,12 @@
 package io.qt.demo.outpace.square.launcher.ui.dock
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -12,6 +15,8 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -21,11 +26,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.qt.demo.outpace.square.launcher.R
+import io.qt.demo.outpace.square.launcher.ui.theme.DockIconPressed
 import io.qt.demo.outpace.square.launcher.ui.theme.DockTemperatureDecrease
 import io.qt.demo.outpace.square.launcher.ui.theme.DockTemperatureIncrease
 import io.qt.demo.outpace.square.launcher.ui.theme.MyApplicationTheme
@@ -81,8 +86,6 @@ fun DockBar(
                 painter = painterResource(R.drawable.ic_dock_home),
                 contentDescription = stringResource(R.string.dock_home),
                 iconSize = DpSize(26.57.dp, 27.15.dp),
-                iconAlignment = Alignment.TopStart,
-                iconOffset = DpOffset(5.67.dp, 3.34.dp),
                 onClick = onHomeClick
             )
             DockMenuButton(
@@ -110,22 +113,25 @@ private fun DockMenuButton(
     contentDescription: String,
     iconSize: DpSize,
     onClick: () -> Unit,
-    iconAlignment: Alignment = Alignment.Center,
-    iconOffset: DpOffset = DpOffset.Zero,
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+
     Box(
         modifier = Modifier
             .size(MenuButtonSize)
-            .clickable(onClick = onClick),
-        contentAlignment = iconAlignment
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,
+                onClick = onClick
+            ),
+        contentAlignment = Alignment.Center
     ) {
         Icon(
             painter = painter,
             contentDescription = contentDescription,
-            tint = Color.White,
-            modifier = Modifier
-                .size(iconSize)
-                .offset(x = iconOffset.x, y = iconOffset.y)
+            tint = if (isPressed) DockIconPressed else Color.White,
+            modifier = Modifier.size(iconSize)
         )
     }
 }
@@ -182,16 +188,23 @@ private fun TemperatureArrow(
     mirrored: Boolean,
     modifier: Modifier = Modifier,
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+
     Box(
         modifier = modifier
             .size(TemperatureArrowTouchSize)
-            .clickable(onClick = onClick),
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,
+                onClick = onClick
+            ),
         contentAlignment = Alignment.Center
     ) {
         Icon(
             painter = painter,
             contentDescription = contentDescription,
-            tint = tint,
+            tint = if (isPressed) tint.copy(alpha = 0.6f) else tint,
             modifier = Modifier
                 .size(TemperatureArrowIconSize)
                 .scale(scaleX = if (mirrored) -1f else 1f, scaleY = 1f)
@@ -199,10 +212,12 @@ private fun TemperatureArrow(
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFF000000, widthDp = 1280, heightDp = 58)
+@Preview(showBackground = true, backgroundColor = 0xFF000000, widthDp = 1280, heightDp = 800)
 @Composable
 private fun DockBarPreview() {
     MyApplicationTheme {
-        DockBar()
+        Box(modifier = Modifier.fillMaxSize()) {
+            DockBar(modifier = Modifier.align(Alignment.BottomCenter))
+        }
     }
 }

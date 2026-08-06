@@ -12,3 +12,4 @@ val Pink40 = Color(0xFF7D5260)
 
 val DockTemperatureDecrease = Color(0xFF4A94E3)
 val DockTemperatureIncrease = Color(0xFFFF383C)
+val DockIconPressed = Color(0xFF4A94E3)
