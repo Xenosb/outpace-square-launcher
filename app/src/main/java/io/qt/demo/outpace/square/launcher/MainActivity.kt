@@ -1,9 +1,13 @@
 package io.qt.demo.outpace.square.launcher
 
 import android.os.Bundle
+
+import java.util.Locale
+
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,10 +23,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+
 import io.qt.demo.outpace.square.launcher.data.AirConditioningProperties
 import io.qt.demo.outpace.square.launcher.ui.dock.DockBar
 import io.qt.demo.outpace.square.launcher.ui.theme.MyApplicationTheme
-import java.util.Locale
+
+import io.qt.demo.outpace.square.IRenderingService
 
 private const val TemperatureStepCelsius = 0.5f
 
@@ -51,6 +57,8 @@ class MainActivity : ComponentActivity() {
                             .background(Color.Black)
                             .padding(innerPadding)
                     ) {
+                        OutpaceSquareView(modifier = Modifier.fillMaxSize())
+
                         DockBar(
                             driverTemperature = formatTemperature(airConditioningProperties.driverTemperature),
                             passengerTemperature = formatTemperature(airConditioningProperties.passengerTemperature),

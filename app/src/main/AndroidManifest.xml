@@ -2,6 +2,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="io.qt.demo.outpace.square.PERMISSION_BIND_SERVICE" />
+
+    <queries>
+        <package android:name="io.qt.demo.outpace.square" />
+        <intent>
+            <action android:name="io.qt.demo.outpace.square.IRenderingService" />
+        </intent>
+        <intent>
+            <action android:name="io.qt.demo.outpace.square.RenderingService" />
+        </intent>
+    </queries>
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
