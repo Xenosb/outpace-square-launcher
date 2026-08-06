@@ -35,6 +35,10 @@ private const val TemperatureStepCelsius = 0.5f
 private fun formatTemperature(value: Float): String =
     String.format(Locale.US, "%.1f °", value)
 
+private const val CarSettingsPaintColor = "#3D4967"
+private const val HomePaintColor = "#A34624"
+private const val AppsPaintColor = "#F4C589"
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,17 +55,35 @@ class MainActivity : ComponentActivity() {
                         )
                     }
 
+                    var renderingService by remember { mutableStateOf<IRenderingService?>(null) }
+
+                    fun sendCarPaintColor(color: String) {
+                        try {
+                            renderingService?.setProperty(
+                                "carPaintColor",
+                                Bundle().apply { putString("value", color) }
+                            )
+                        } catch (_: Exception) {
+                        }
+                    }
+
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
                             .background(Color.Black)
                             .padding(innerPadding)
                     ) {
-                        OutpaceSquareView(modifier = Modifier.fillMaxSize())
+                        OutpaceSquareView(
+                            modifier = Modifier.fillMaxSize(),
+                            onRenderingServiceChanged = { renderingService = it }
+                        )
 
                         DockBar(
                             driverTemperature = formatTemperature(airConditioningProperties.driverTemperature),
                             passengerTemperature = formatTemperature(airConditioningProperties.passengerTemperature),
+                            onCarSettingsClick = { sendCarPaintColor(CarSettingsPaintColor) },
+                            onHomeClick = { sendCarPaintColor(HomePaintColor) },
+                            onAppsClick = { sendCarPaintColor(AppsPaintColor) },
                             onDecreaseDriverTemperature = {
                                 airConditioningProperties = airConditioningProperties.copy(
                                     driverTemperature = airConditioningProperties.driverTemperature - TemperatureStepCelsius
