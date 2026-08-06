@@ -46,15 +46,15 @@ private val TemperatureArrowInset = 2.31.dp
 
 @Composable
 fun DockBar(
-    temperatureLeft: String = "21.0 °",
-    temperatureRight: String = "21.0 °",
+    driverTemperature: String = "21.0 °",
+    passengerTemperature: String = "21.0 °",
     onCarSettingsClick: () -> Unit = {},
     onHomeClick: () -> Unit = {},
     onAppsClick: () -> Unit = {},
-    onDecreaseLeftTemperature: () -> Unit = {},
-    onIncreaseLeftTemperature: () -> Unit = {},
-    onDecreaseRightTemperature: () -> Unit = {},
-    onIncreaseRightTemperature: () -> Unit = {},
+    onDecreaseDriverTemperature: () -> Unit = {},
+    onIncreaseDriverTemperature: () -> Unit = {},
+    onDecreasePassengerTemperature: () -> Unit = {},
+    onIncreasePassengerTemperature: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -63,9 +63,9 @@ fun DockBar(
             .wrapContentHeight()
     ) {
         TemperatureControl(
-            temperature = temperatureLeft,
-            onDecrease = onDecreaseLeftTemperature,
-            onIncrease = onIncreaseLeftTemperature,
+            temperature = driverTemperature,
+            onDecrease = onDecreaseDriverTemperature,
+            onIncrease = onIncreaseDriverTemperature,
             modifier = Modifier
                 .align(Alignment.CenterStart)
                 .padding(start = 13.dp)
@@ -97,9 +97,9 @@ fun DockBar(
         }
 
         TemperatureControl(
-            temperature = temperatureRight,
-            onDecrease = onDecreaseRightTemperature,
-            onIncrease = onIncreaseRightTemperature,
+            temperature = passengerTemperature,
+            onDecrease = onDecreasePassengerTemperature,
+            onIncrease = onIncreasePassengerTemperature,
             modifier = Modifier
                 .align(Alignment.CenterEnd)
                 .padding(end = 18.4.dp)
